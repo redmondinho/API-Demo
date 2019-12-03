@@ -127,3 +127,13 @@ dmypy.json
 # Specific exclusions
 *.db
 config.py
+
+*.DS_Store
+
+namespace/service/._auth_helper.py
+
+namespace/._tasks.py
+
+namespace/._message.py
+
+namespace/._authentication.py
