@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from passlib.hash import pbkdf2_sha256
 
 from data.users import Token, User
-from config import requests_per_token
+#from config import requests_per_token
 
 # Validate supplied token
 def token_required(f):
@@ -30,7 +30,7 @@ def token_required(f):
             token_record.requests += 1
 
             # Check max requests
-            if token_record.requests > requests_per_token:
+            if token_record.requests > 100:
                 token_record.expiry = datetime.utcnow()
                 token_record.save()
                 return abort(429, 'You have exceeded the request limit, the current token has now expired.')
