@@ -23,10 +23,6 @@ api = Api(app,
 
 app.config['RESTPLUS_MASK_SWAGGER'] = False
 
-@app.route('/register')
-def register():
-    return 'Hello World'
-
 # Import namespaces
 from namespace.message import api as message
 from namespace.authentication import api as authentication
