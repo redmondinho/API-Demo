@@ -1,7 +1,5 @@
 from peewee import *
 from playhouse.hybrid import hybrid_property
-from config import requests_per_token, initial_password, initial_username, initial_email
-
 
 users_db = SqliteDatabase('data/users.db')
 
@@ -23,7 +21,7 @@ class Token(Model):
 	expiry = DateTimeField()
 	requests = IntegerField(default=0)
 	user_id = ForeignKeyField(User, backref='User', null=True)
-	max_requests = IntegerField(default=requests_per_token)
+	max_requests = IntegerField(default=100)
 
 	@hybrid_property
 	def requests_remaining(self):
@@ -33,7 +31,7 @@ class Token(Model):
 		database = users_db
 
 
-def init_db():
+def init_db(initial_password, initial_username, initial_email):
 	users_db.connect()
 	users_db.create_tables([Token, User])
 
