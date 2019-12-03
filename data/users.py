@@ -1,6 +1,6 @@
 from peewee import *
 from playhouse.hybrid import hybrid_property
-from config import requests_per_token
+from config import requests_per_token, 
 
 
 users_db = SqliteDatabase('data/users.db')
@@ -41,5 +41,5 @@ def init_db():
 	from datetime import datetime
 	from passlib.hash import pbkdf2_sha256
  
-	hash = pbkdf2_sha256.encrypt("manager", rounds=200000, salt_size=16)
-	base_user = user_record = User.create(name='Tom', email='redmondinho@gmail.com', created=datetime.utcnow(), password=hash)
+	hash = pbkdf2_sha256.encrypt("xxxxxx", rounds=200000, salt_size=16)
+	base_user = user_record = User.create(name='xxxxxx', email='xxxxxxxxxxx', created=datetime.utcnow(), password=hash)
