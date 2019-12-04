@@ -18,7 +18,7 @@ task_list_response = api.model('tasks_list_data', {
 
 
 @api.route('/')
-class Tasks(Resource):
+class All_Tasks(Resource):
 
 	@token_required
 	@api.doc(description='Return all user tasks.', security='apikey')
@@ -29,7 +29,7 @@ class Tasks(Resource):
 
 
 @api.route('/<int:task_id>')
-class Task(Resource):
+class A_Task(Resource):
 
 	@token_required
 	@api.doc(description='Return supplied user task detail.', security='apikey', params={'task_id' : 'A Task Id'})
