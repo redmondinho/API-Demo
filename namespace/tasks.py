@@ -23,8 +23,12 @@ class All_Tasks(Resource):
 	@token_required
 	@api.doc(description='Return all user tasks.', security='apikey')
 	@api.marshal_with(task_list_response)
-	def get(self):
-		tasks = Task.select().where(Task.user_id==1)
+	def get(self,user):
+		try:
+			tasks = Task.select().where(Task.user_id==1)
+		except:
+			pass
+
 		return {'tasks' : tasks}
 
 
@@ -35,5 +39,8 @@ class A_Task(Resource):
 	@api.doc(description='Return supplied user task detail.', security='apikey', params={'task_id' : 'A Task Id'})
 	@api.marshal_with(task_response)
 	def get(self, task_id, user):
-		task = Task.get(Task.id==task_id)
+		try:
+			task = Task.get(Task.id==task_id)
+		except:
+			return api.abort(404)
 		return task
