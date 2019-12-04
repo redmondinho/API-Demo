@@ -24,8 +24,7 @@ class Tasks(Resource):
 	@api.doc(description='Return all user tasks.', security='apikey')
 	@api.marshal_with(task_list_response)
 	def get(self, user):
-		tasks = Task.select().where(Task.id>0)
-		print(tasks)
+		tasks = Task.select().where(Task.user_id==user.id)
 		return tasks
 
 

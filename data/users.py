@@ -3,19 +3,20 @@ from playhouse.hybrid import hybrid_property
 
 users_db = SqliteDatabase('data/users.db')
 
+class BaseModelUsers(Model):
+    class Meta:
+            database = users_db
 
-class User(Model):
+
+class User(BaseModelUsers):
 	name = CharField()
 	created = DateTimeField()
 	email = CharField(unique=True)
 	active = IntegerField(default=1)
 	password = CharField(null=True)
 
-	class Meta:
-		database = users_db
 
-
-class Token(Model):
+class Token(BaseModelUsers):
 	token = CharField(unique=True)
 	created = DateTimeField()
 	expiry = DateTimeField()
@@ -26,9 +27,6 @@ class Token(Model):
 	@hybrid_property
 	def requests_remaining(self):
 		return self.max_requests - self.requests
-
-	class Meta:
-		database = users_db
 
 
 def init_db(initial_password, initial_username, initial_email):

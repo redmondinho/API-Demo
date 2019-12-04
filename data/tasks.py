@@ -3,12 +3,14 @@ from playhouse.hybrid import hybrid_property
 
 tasks_db = SqliteDatabase('data/tasks.db')
 
+class BaseModelTasks(Model):
+    class Meta:
+            database = tasks_db
 
-class Task(Model):
+
+class Task(BaseModelTasks):
 	user_id = IntegerField()
 
-	class Meta:
-		database = tasks_db
 
 
 def init_db():
