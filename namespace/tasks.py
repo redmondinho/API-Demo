@@ -5,7 +5,7 @@ from datetime import datetime
 from namespace.service.auth_helper import token_required
 from data.tasks import Task
 
-api = Namespace('task', description='Manage user tasks.')
+api = Namespace('tasks', description='Manage user tasks.')
 
 task_response = api.model('task_data', {
     'id' : fields.Integer
