@@ -5,7 +5,7 @@ from datetime import datetime
 from namespace.service.auth_helper import token_required
 from data.tasks import Task
 
-api = Namespace('task', description='Manage user task events.')
+api = Namespace('task', description='Manage user tasks.')
 
 task_response = api.model('task_data', {
     'id' : fields.Integer,
@@ -52,6 +52,7 @@ class Tasks_Route(Resource):
 	@api.doc(description='Create a new Task for the current user.', security='apikey')
 	@api.marshal_with(task_response)
 	@api.expect(task_model, validate=True)
+	@api.response(500, 'Error creating task')
 	def post(self, user):
 
 		# Get supplied arguments
@@ -74,9 +75,54 @@ class Task_Route(Resource):
 	@token_required
 	@api.doc(description='Return supplied user task detail.', security='apikey', params={'task_id' : 'A Task Id'})
 	@api.marshal_with(full_task_response)
+	@api.response(404, 'Task not found')
 	def get(self, task_id, user):
 		try:
 			task = Task.get(Task.id==task_id)
 		except:
 			return api.abort(404)
 		return task
+
+
+	@token_required
+	@api.doc(description='Delete supplied user task.', security='apikey', 
+			 params={'task_id' : 'A Task Id'})
+	@api.response(204, 'Task deleted')
+	@api.response(500, 'Error deleting task')
+	@api.response(404, 'Task not found')
+	def delete(self,task_id, user):
+		try:
+			task = Task.get(Task.id==task_id)
+		except:
+			return api.abort(404)
+
+		try:
+			task.delete_instance()
+		except:
+			return api.abort(500)
+
+
+	@token_required
+	@api.expect(task_model, validate=True)
+	@api.doc(description='Update supplied user task.', security='apikey', 
+			 params={'task_id' : 'A Task Id'})
+	@api.response(204, 'Task updated')
+	@api.response(500, 'Error updating task')
+	@api.response(404, 'Task not found')
+	def put(self,task_id, user):
+		try:
+			task = Task.get(Task.id==task_id)
+		except:
+			return api.abort(404)
+
+		try:
+			# Get supplied arguments
+			args = task_parser.parse_args()
+			title = args['title']
+			description = args['description']
+
+			task.title = title
+			task.description = description
+			task.save()
+		except:
+			return api.abort(500)
