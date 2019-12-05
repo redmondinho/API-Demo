@@ -24,7 +24,7 @@ user_parser.add_argument('user-name', required=True, help='Enter your user name.
 user_parser.add_argument('password', required=True, help='Enter your password.')
 
 
-@api.route('/')
+@api.route('')
 class Authentication(Resource):
 
     @api.doc(description='Will return an access token for the supplied user account.')

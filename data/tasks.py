@@ -11,8 +11,9 @@ class BaseModelTasks(Model):
 class Task(BaseModelTasks):
 	user_id = IntegerField()
 	title = CharField()
-	description = CharField()
-
+	description = CharField(null=True)
+	date_created = DateTimeField(null=True)
+	date_modified = DateTimeField(null=True)
 
 
 def init_db():

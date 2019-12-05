@@ -9,7 +9,7 @@ message_response = api.model('message_data', {
     })
 
 
-@api.route('/')
+@api.route('')
 class Message(Resource):
 
     @token_required

@@ -14,7 +14,9 @@ task_response = api.model('task_data', {
 full_task_response = api.model('task_data', {
     'id' : fields.Integer,
     'title' : fields.String,
-    'description' : fields.String
+    'description' : fields.String,
+    'date_created' : fields.DateTime(),
+    'date_modified' : fields.DateTime(),
     })
 
 task_list_response = api.model('tasks_list_data', {
@@ -26,14 +28,12 @@ task_model = api.model('new-task', {
     'description' : fields.String(description='Task description.')
     })
 
-
-
 task_parser = reqparse.RequestParser()
 task_parser.add_argument('title', required=True, help='Enter a title for your task.')
 task_parser.add_argument('description', help='Enter an optional description for your task.')
 
 
-@api.route('/')
+@api.route('')
 class Tasks_Route(Resource):
 
 	@token_required
@@ -63,7 +63,8 @@ class Tasks_Route(Resource):
 
 		# Create task
 		try:
-			new_task = Task.create(user_id=user.id,title=title,description=description)
+			new_task = Task.create(user_id=user.id,title=title,description=description,
+				date_created=datetime.utcnow())
 			return new_task
 		except:
 			app.logger.error('Error creating new task')
@@ -74,7 +75,8 @@ class Tasks_Route(Resource):
 class Task_Route(Resource):
 
 	@token_required
-	@api.doc(description='Return supplied user task detail.', security='apikey', params={'task_id' : 'A Task Id'})
+	@api.doc(description='Return supplied user task detail.', security='apikey', 
+		params={'task_id' : 'A Task Id'})
 	@api.marshal_with(full_task_response)
 	@api.response(404, 'Task not found')
 	def get(self, task_id, user):
@@ -124,6 +126,7 @@ class Task_Route(Resource):
 
 			task.title = title
 			task.description = description
+			task.date_modified = datetime.utcnow()
 			task.save()
 
 			return None, 204
