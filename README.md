@@ -4,7 +4,7 @@ This project is a demo template to test out API development with:
 
 * Python3
 * Flask
-* Flask RESTful
+* Flask RESTplus
 
 ---
 
