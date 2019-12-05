@@ -52,6 +52,7 @@ class Tasks_Route(Resource):
 	@api.doc(description='Create a new Task for the current user.', security='apikey')
 	@api.marshal_with(task_response)
 	@api.expect(task_model, validate=True)
+	@api.response(200, 'Task created', task_response)
 	@api.response(500, 'Error creating task')
 	def post(self, user):
 
