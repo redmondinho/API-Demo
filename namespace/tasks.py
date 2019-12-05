@@ -8,7 +8,7 @@ from data.tasks import Task
 api = Namespace('task', description='Manage user tasks.')
 
 task_response = api.model('task_data', {
-    'id' : fields.Integer,
+    'id' : fields.Integer
     })
 
 full_task_response = api.model('task_data', {
@@ -16,7 +16,7 @@ full_task_response = api.model('task_data', {
     'title' : fields.String,
     'description' : fields.String,
     'date_created' : fields.DateTime(),
-    'date_modified' : fields.DateTime(),
+    'date_modified' : fields.DateTime()
     })
 
 task_list_response = api.model('tasks_list_data', {
