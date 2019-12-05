@@ -20,7 +20,7 @@ full_task_response = api.model('task_data', {
     })
 
 task_list_response = api.model('tasks_list_data', {
-	'tasks' : fields.List(fields.Nested(full_task_response))
+	'data' : fields.List(fields.Nested(full_task_response))
     })
 
 task_model = api.model('new-task', {
@@ -45,12 +45,12 @@ class Tasks_Route(Resource):
 		except:
 			pass
 
-		return {'tasks' : tasks}
+		return {'data' : tasks}
 
 
 	@token_required
 	@api.doc(description='Create a new Task for the current user.', security='apikey')
-	@api.marshal_with(task_response)
+	@api.marshal_with(task_list_response)
 	@api.expect(task_model, validate=True)
 	@api.response(200, 'Task created', task_response)
 	@api.response(500, 'Error creating task')
@@ -65,7 +65,7 @@ class Tasks_Route(Resource):
 		try:
 			new_task = Task.create(user_id=user.id,title=title,description=description,
 				date_created=datetime.utcnow())
-			return new_task
+			return {'data' : [new_task]}
 		except:
 			app.logger.error('Error creating new task')
 			api.abort(500)
@@ -77,14 +77,14 @@ class Task_Route(Resource):
 	@token_required
 	@api.doc(description='Return supplied user task detail.', security='apikey', 
 		params={'task_id' : 'A Task Id'})
-	@api.marshal_with(full_task_response)
+	@api.marshal_with(task_list_response)
 	@api.response(404, 'Task not found')
 	def get(self, task_id, user):
 		try:
 			task = Task.get(Task.id==task_id)
 		except:
 			return api.abort(404)
-		return task
+		return {'data' : [task]}
 
 
 	@token_required
@@ -109,7 +109,8 @@ class Task_Route(Resource):
 	@api.expect(task_model, validate=True)
 	@api.doc(description='Update supplied user task.', security='apikey', 
 			 params={'task_id' : 'A Task Id'})
-	@api.response(204, 'Task updated')
+	@api.marshal_with(task_list_response)
+	@api.response(200, 'Task updated')
 	@api.response(500, 'Error updating task')
 	@api.response(404, 'Task not found')
 	def put(self,task_id, user):
@@ -129,7 +130,7 @@ class Task_Route(Resource):
 			task.date_modified = datetime.utcnow()
 			task.save()
 
-			return None, 204
+			return {'data' : [task]}
 
 		except:
 			return api.abort(500)
