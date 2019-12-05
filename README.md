@@ -24,9 +24,9 @@ Allows the user to view and manage tasks associated with their account.
 
 1. Clone
 2. Create config.py add the following variables to automatically create a default account (set variable values)
-	2.1 initial_password = ''
-	2.2 initial_username = ''
-	2.3 initial_email = ''
+ 1. initial_password = ''
+ 2. initial_username = ''
+ 3. initial_email = ''
 3. Run init_databases.py to creat the databases
 
 
