@@ -124,5 +124,8 @@ class Task_Route(Resource):
 			task.title = title
 			task.description = description
 			task.save()
+
+			return None, 204
+
 		except:
 			return api.abort(500)
