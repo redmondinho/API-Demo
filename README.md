@@ -2,9 +2,12 @@
 
 This project is a demo template to test out API development with:
 
+* Python3
 * Flask
 * Flask RestFul
 
+
+---
 
 ## Current Content
 
@@ -20,3 +23,8 @@ A simple end point which check the current user is authorized, brings the curren
 ### Tasks
 
 Allows the user to view and manage tasks associated with their account.
+
+
+---
+
+... more to follow ...
